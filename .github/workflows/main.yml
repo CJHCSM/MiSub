@@ -1,0 +1,19 @@
+name: Sync main to dev
+on:
+  schedule:
+    - cron: "0 0 * * *"  # 每天UTC时间0点执行
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  sync-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Sync main to dev
+        run: |
+          git checkout dev
+          git merge origin/main --no-edit
+          git push origin dev
